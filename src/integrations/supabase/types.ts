@@ -25,6 +25,8 @@ export type Database = {
           phone: string
           redeemed_at: string | null
           status: Database["public"]["Enums"]["coupon_status"]
+          transaction_id: string | null
+          verification_status: Database["public"]["Enums"]["verification_status"]
         }
         Insert: {
           coupon_id: string
@@ -36,6 +38,8 @@ export type Database = {
           phone: string
           redeemed_at?: string | null
           status?: Database["public"]["Enums"]["coupon_status"]
+          transaction_id?: string | null
+          verification_status?: Database["public"]["Enums"]["verification_status"]
         }
         Update: {
           coupon_id?: string
@@ -47,6 +51,8 @@ export type Database = {
           phone?: string
           redeemed_at?: string | null
           status?: Database["public"]["Enums"]["coupon_status"]
+          transaction_id?: string | null
+          verification_status?: Database["public"]["Enums"]["verification_status"]
         }
         Relationships: []
       }
@@ -85,6 +91,7 @@ export type Database = {
       app_role: "admin" | "user"
       coupon_status: "Unused" | "Redeemed"
       payment_type: "Online" | "Cash"
+      verification_status: "Pending" | "Verified"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -215,6 +222,7 @@ export const Constants = {
       app_role: ["admin", "user"],
       coupon_status: ["Unused", "Redeemed"],
       payment_type: ["Online", "Cash"],
+      verification_status: ["Pending", "Verified"],
     },
   },
 } as const
