@@ -10,10 +10,10 @@ import { generateCouponId } from "@/lib/coupon";
 import { Link } from "react-router-dom";
 import { Shield, Loader2 } from "lucide-react";
 import { z } from "zod";
-import phonePeQr from "/placeholder.svg";
+import { QRCodeSVG } from "qrcode.react";
 
 const PRICE = 100;
-const UPI_ID = "kapavarapuvamsiraghuram@ybl";
+const UPI_ID = "9177322344@ybl";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -180,17 +180,36 @@ export default function Index() {
             <>
               <h2 className="text-xl font-display font-bold text-center">Pay via UPI 💳</h2>
 
-              {/* UPI QR Code */}
-              <div className="flex flex-col items-center space-y-3">
-                <div className="bg-white rounded-xl p-3 shadow-md">
-                  <img src={phonePeQr} alt="PhonePe UPI QR Code" className="w-56 h-56 object-contain" />
+              <div className="flex flex-col items-center space-y-4">
+                <a
+                  href={`upi://pay?pa=${UPI_ID}&pn=WaffleFiesta&am=${PRICE}&cu=INR`}
+                  className="bg-white rounded-xl p-6 shadow-md border-2 border-primary/20 hover:border-primary/40 transition-colors cursor-pointer"
+                  title="Click to pay via UPI app"
+                >
+                  <QRCodeSVG
+                    value={`upi://pay?pa=${UPI_ID}&pn=WaffleFiesta&am=${PRICE}&cu=INR`}
+                    size={224}
+                    level="H"
+                    includeMargin={true}
+                  />
+                </a>
+
+                <div className="flex flex-col items-center gap-2 w-full">
+                  <p className="text-sm text-muted-foreground">Scan QR or tap below to pay</p>
+                  <Button
+                    variant="outline"
+                    className="w-full h-11 border-primary/20 hover:bg-primary/5 text-primary font-bold md:hidden"
+                    onClick={() => window.location.href = `upi://pay?pa=${UPI_ID}&pn=WaffleFiesta&am=${PRICE}&cu=INR`}
+                  >
+                    📲 Pay via UPI App
+                  </Button>
                 </div>
-                <p className="text-sm text-muted-foreground">Scan & Pay using any UPI app</p>
-                <div className="bg-muted rounded-lg px-4 py-2 text-center">
+
+                <div className="bg-muted rounded-lg px-4 py-2 text-center w-full">
                   <p className="text-xs text-muted-foreground">UPI ID</p>
                   <p className="font-mono font-bold text-sm text-foreground">{UPI_ID}</p>
                 </div>
-                <div className="bg-primary/10 rounded-lg px-4 py-2 text-center">
+                <div className="bg-primary/10 rounded-lg px-4 py-2 text-center w-full">
                   <p className="text-xs text-muted-foreground">Amount</p>
                   <p className="font-bold text-lg text-primary">₹{PRICE}</p>
                 </div>
