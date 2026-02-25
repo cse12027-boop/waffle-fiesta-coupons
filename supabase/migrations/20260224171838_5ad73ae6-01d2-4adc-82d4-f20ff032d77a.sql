@@ -43,6 +43,19 @@ AS $$
   )
 $$;
 
+CREATE UNIQUE INDEX unique_payment_id_not_null
+ON public.coupons (payment_id)
+WHERE payment_id IS NOT NULL;
+
+ALTER TABLE public.coupons
+ADD CONSTRAINT payment_id_required_for_online
+CHECK (
+  (payment_type = 'Online' AND payment_id IS NOT NULL)
+  OR
+  (payment_type = 'Cash')
+);
+
+
 -- RLS for user_roles: only admins can read
 CREATE POLICY "Admins can view roles" ON public.user_roles
 FOR SELECT TO authenticated
