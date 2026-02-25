@@ -10,7 +10,7 @@ import { generateCouponId } from "@/lib/coupon";
 import { Link } from "react-router-dom";
 import { Shield, Loader2 } from "lucide-react";
 import { z } from "zod";
-import phonePeQr from "/phonepe-qr.png";
+import phonePeQr from "../phonepe-qr.png";
 
 const PRICE = 100;
 const UPI_ID = "kapavarapuvamsiraghuram@ybl";
