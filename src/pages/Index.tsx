@@ -10,7 +10,7 @@ import { generateCouponId } from "@/lib/coupon";
 import { Link } from "react-router-dom";
 import { Shield, Loader2 } from "lucide-react";
 import { z } from "zod";
-import phonePeQr from "../phonepe-qr.jpg";
+import phonePeQr from "/placeholder.svg";
 
 const PRICE = 100;
 const UPI_ID = "kapavarapuvamsiraghuram@ybl";
@@ -58,6 +58,18 @@ export default function Index() {
 
     setLoading(true);
     try {
+      // Check for duplicate transaction ID first (proactive check)
+      const { data: existingTxn, error: txnError } = await supabase
+        .from("coupons")
+        .select("id")
+        .eq("transaction_id", parsed.data.transactionId)
+        .maybeSingle();
+
+      if (txnError) throw txnError;
+      if (existingTxn) {
+        throw new Error("This Transaction ID has already been used. Please enter a valid unique Transaction ID.");
+      }
+
       // Generate unique coupon ID
       let couponId = generateCouponId();
       let { data: existing } = await supabase.from("coupons").select("id").eq("coupon_id", couponId).maybeSingle();
@@ -77,7 +89,12 @@ export default function Index() {
         status: "Unused",
       }).select().single();
 
-      if (error) throw error;
+      if (error) {
+        if (error.code === "23505" && error.message.includes("transaction_id")) {
+          throw new Error("This Transaction ID has already been used. Please enter a valid unique Transaction ID.");
+        }
+        throw error;
+      }
 
       setCoupon({
         couponId: data.coupon_id,
