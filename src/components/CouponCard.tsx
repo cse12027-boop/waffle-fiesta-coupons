@@ -74,7 +74,7 @@ export function CouponCard({ couponId, name, phone, paymentType, createdAt }: Co
       {/* Header */}
       <div className="gradient-waffle p-5 text-center">
         <h2 className="text-2xl font-display font-bold text-primary-foreground">🧇 Waffle Fiesta</h2>
-        <p className="text-sm text-primary-foreground/80 mt-1">Stall #7 • College Fest 2026</p>
+        <p className="text-sm text-primary-foreground/80 mt-1">Stall #17 • College Fest 2026</p>
       </div>
 
       {/* Dashed separator */}
