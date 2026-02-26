@@ -13,7 +13,7 @@ import { z } from "zod";
 import { QRCodeSVG } from "qrcode.react";
 
 const PRICE = 100;
-const UPI_ID = "9177322344@ybl";
+const UPI_ID = "pujithakothuri713@okicici";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -182,12 +182,12 @@ export default function Index() {
 
               <div className="flex flex-col items-center space-y-4">
                 <a
-                  href={`upi://pay?pa=${UPI_ID}&pn=KAPAVARAPU VAMSI RAGHURAM&am=${PRICE}&cu=INR`}
+                  href={`upi://pay?pa=${UPI_ID}&pn=Pujitha Kothuri&am=${PRICE}&cu=INR`}
                   className="bg-white rounded-xl p-6 shadow-md border-2 border-primary/20 hover:border-primary/40 transition-colors cursor-pointer"
                   title="Click to pay via UPI app"
                 >
                   <QRCodeSVG
-                    value={`upi://pay?pa=${UPI_ID}&pn=KAPAVARAPU VAMSI RAGHURAM&am=${PRICE}&cu=INR`}
+                    value={`upi://pay?pa=${UPI_ID}&pn=Pujitha Kothuri&am=${PRICE}&cu=INR`}
                     size={224}
                     level="H"
                     includeMargin={true}
@@ -199,7 +199,7 @@ export default function Index() {
                   <Button
                     variant="outline"
                     className="w-full h-11 border-primary/20 hover:bg-primary/5 text-primary font-bold md:hidden"
-                    onClick={() => window.location.href = `upi://pay?pa=${UPI_ID}&pn=KAPAVARAPU VAMSI RAGHURAM&am=${PRICE}&cu=INR`}
+                    onClick={() => window.location.href = `upi://pay?pa=${UPI_ID}&pn=Pujitha Kothuri&am=${PRICE}&cu=INR`}
                   >
                     📲 Pay via UPI App
                   </Button>
