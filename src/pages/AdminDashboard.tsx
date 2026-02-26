@@ -9,8 +9,12 @@ import { CouponCard } from "@/components/CouponCard";
 import { generateCouponId } from "@/lib/coupon";
 import { QrScanner } from "@/components/QrScanner";
 import {
-  LogOut, Search, QrCode, Plus, BarChart3, Ticket, CheckCircle, CreditCard, Banknote, Loader2, X, ScanLine, ShieldCheck, Clock
+  LogOut, Search, QrCode, Plus, BarChart3, Ticket, CheckCircle, CreditCard, Banknote, Loader2, X, ScanLine, ShieldCheck, Clock, Trash2
 } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type Coupon = {
   id: string;
@@ -165,6 +169,20 @@ export default function AdminDashboard() {
       return;
     }
     toast({ title: "✅ Verified!", description: `Payment for ${couponId} verified` });
+    fetchCoupons();
+  };
+
+  const handleDelete = async (couponId: string) => {
+    const { error } = await supabase
+      .from("coupons")
+      .delete()
+      .eq("coupon_id", couponId);
+
+    if (error) {
+      toast({ title: "Error", description: "Failed to delete coupon", variant: "destructive" });
+      return;
+    }
+    toast({ title: "🗑️ Deleted!", description: `Coupon ${couponId} deleted` });
     fetchCoupons();
   };
 
@@ -374,6 +392,27 @@ export default function AdminDashboard() {
                           <CheckCircle className="w-3 h-3" /> Redeem
                         </Button>
                       )}
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button size="sm" variant="outline" className="text-xs gap-1 text-destructive">
+                            <Trash2 className="w-3 h-3" /> Delete
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Coupon?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This will permanently delete coupon <strong>{c.coupon_id}</strong> for {c.name}. This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(c.coupon_id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </td>
                   </tr>
                 ))}
