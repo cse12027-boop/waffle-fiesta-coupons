@@ -13,7 +13,7 @@ import { z } from "zod";
 import { QRCodeSVG } from "qrcode.react";
 
 const PRICE = 100;
-const UPI_ID = "9177322344@ybl";
+const UPI_ID = "kapavarapuvamsiraghuram@ybl";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
