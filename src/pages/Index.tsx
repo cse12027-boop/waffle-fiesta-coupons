@@ -13,8 +13,12 @@ import { z } from "zod";
 import { QRCodeSVG } from "qrcode.react";
 
 const PRICE = 100;
+<<<<<<< HEAD
 const UPI_ID = "7204360341@okbizaxis";
 const ACCOUNT_NAME = "Waffle Fiesta";
+=======
+const UPI_ID = "kothuripujitha713@okicici";
+>>>>>>> 0f232b976569cfe851ba8a9d5383b0b0dc0a5573
 
 const formSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -185,12 +189,20 @@ export default function Index() {
 
               <div className="flex flex-col items-center space-y-4">
                 <a
+<<<<<<< HEAD
                   href={`upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(ACCOUNT_NAME)}&am=${PRICE}&cu=INR&mc=5814&tn=Payment%20to%20Waffle%20Fiesta`}
+=======
+                  href={`upi://pay?pa=${UPI_ID}&pn=WaffleFiesta&am=${PRICE}&cu=INR`}
+>>>>>>> 0f232b976569cfe851ba8a9d5383b0b0dc0a5573
                   className="bg-white rounded-xl p-6 shadow-md border-2 border-primary/20 hover:border-primary/40 transition-colors cursor-pointer"
                   title="Scan or click to pay via UPI app"
                 >
                   <QRCodeSVG
+<<<<<<< HEAD
                     value={`upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(ACCOUNT_NAME)}&am=${PRICE}&cu=INR&mc=5814&tn=Payment%20to%20Waffle%20Fiesta`}
+=======
+                    value={`upi://pay?pa=${UPI_ID}&pn=WaffleFiesta&am=${PRICE}&cu=INR`}
+>>>>>>> 0f232b976569cfe851ba8a9d5383b0b0dc0a5573
                     size={224}
                     level="H"
                     includeMargin={true}
@@ -202,7 +214,11 @@ export default function Index() {
                   <Button
                     variant="outline"
                     className="w-full h-11 border-primary/20 hover:bg-primary/5 text-primary font-bold md:hidden"
+<<<<<<< HEAD
                     onClick={() => window.location.href = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(ACCOUNT_NAME)}&am=${PRICE}&cu=INR&mc=5814&tn=Payment%20to%20Waffle%20Fiesta`}
+=======
+                    onClick={() => window.location.href = `upi://pay?pa=${UPI_ID}&pn=WaffleFiesta&am=${PRICE}&cu=INR`}
+>>>>>>> 0f232b976569cfe851ba8a9d5383b0b0dc0a5573
                   >
                     📲 Pay via UPI App
                   </Button>

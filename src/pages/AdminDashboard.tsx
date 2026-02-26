@@ -210,7 +210,11 @@ export default function AdminDashboard() {
 
       console.log("Deleted successfully:", data);
       toast({ title: "🗑️ Deleted", description: `Coupon ${couponId} has been removed` });
+<<<<<<< HEAD
       setScanResult(null); // Clear scan result if we were looking at it
+=======
+      setScanResult(null);
+>>>>>>> 0f232b976569cfe851ba8a9d5383b0b0dc0a5573
       fetchCoupons();
     } catch (err: unknown) {
       console.error("Unexpected error during deletion:", err);
@@ -268,7 +272,11 @@ export default function AdminDashboard() {
             { label: "Online (UPI)", value: stats.online, icon: CreditCard, color: "bg-accent/20 text-accent-foreground" },
             { label: "Cash", value: stats.cash, icon: Banknote, color: "bg-secondary/50 text-secondary-foreground" },
           ].map((s) => (
+<<<<<<< HEAD
             <div key={s.label} className={`rounded - xl p - 4 ${s.color} border`}>
+=======
+            <div key={s.label} className={`rounded-xl p-4 ${s.color} border`}>
+>>>>>>> 0f232b976569cfe851ba8a9d5383b0b0dc0a5573
               <s.icon className="w-5 h-5 mb-1" />
               <p className="text-2xl font-bold">{s.value}</p>
               <p className="text-xs opacity-80">{s.label}</p>
@@ -322,7 +330,11 @@ USING (true);`}
 
         {/* Scan Result */}
         {scanResult && (
+<<<<<<< HEAD
           <div className={`border - 2 rounded - xl p - 5 ${scanResult.valid ? "border-success bg-success/5" : "border-destructive bg-destructive/5"}`}>
+=======
+          <div className={`border-2 rounded-xl p-5 ${scanResult.valid ? "border-success bg-success/5" : "border-destructive bg-destructive/5"}`}>
+>>>>>>> 0f232b976569cfe851ba8a9d5383b0b0dc0a5573
             <div className="flex items-center gap-3 mb-3">
               {scanResult.valid ? <CheckCircle className="w-8 h-8 text-success" /> : <X className="w-8 h-8 text-destructive" />}
               <div>
@@ -442,17 +454,29 @@ USING (true);`}
                     <td className="p-3">{c.name}</td>
                     <td className="p-3 hidden md:table-cell">{c.phone}</td>
                     <td className="p-3">
+<<<<<<< HEAD
                       <span className={`px - 2 py - 0.5 rounded - full text - xs font - medium ${c.payment_type === "Online" ? "bg-accent/20 text-accent-foreground" : "bg-secondary text-secondary-foreground"}`}>
+=======
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${c.payment_type === "Online" ? "bg-accent/20 text-accent-foreground" : "bg-secondary text-secondary-foreground"}`}>
+>>>>>>> 0f232b976569cfe851ba8a9d5383b0b0dc0a5573
                         {c.payment_type === "Online" ? "UPI" : "Cash"}
                       </span>
                     </td>
                     <td className="p-3">
+<<<<<<< HEAD
                       <span className={`px - 2 py - 0.5 rounded - full text - xs font - medium ${c.verification_status === "Verified" ? "bg-success/10 text-success" : "bg-warning/10 text-warning-foreground"}`}>
+=======
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${c.verification_status === "Verified" ? "bg-success/10 text-success" : "bg-warning/10 text-warning-foreground"}`}>
+>>>>>>> 0f232b976569cfe851ba8a9d5383b0b0dc0a5573
                         {c.verification_status}
                       </span>
                     </td>
                     <td className="p-3">
+<<<<<<< HEAD
                       <span className={`px - 2 py - 0.5 rounded - full text - xs font - medium ${c.status === "Unused" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
+=======
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${c.status === "Unused" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
+>>>>>>> 0f232b976569cfe851ba8a9d5383b0b0dc0a5573
                         {c.status}
                       </span>
                     </td>
