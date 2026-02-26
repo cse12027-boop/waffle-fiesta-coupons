@@ -9,8 +9,19 @@ import { CouponCard } from "@/components/CouponCard";
 import { generateCouponId } from "@/lib/coupon";
 import { QrScanner } from "@/components/QrScanner";
 import {
-  LogOut, Search, QrCode, Plus, BarChart3, Ticket, CheckCircle, CreditCard, Banknote, Loader2, X, ScanLine, ShieldCheck, Clock
+  LogOut, Search, QrCode, Plus, BarChart3, Ticket, CheckCircle, CreditCard, Banknote, Loader2, X, ScanLine, ShieldCheck, Clock, Trash2
 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type Coupon = {
   id: string;
@@ -168,6 +179,45 @@ export default function AdminDashboard() {
     fetchCoupons();
   };
 
+  const handleDelete = async (id: string, couponId: string) => {
+    console.log("Attempting to delete coupon:", id, " (Coupon ID:", couponId, ")");
+    try {
+      const { data, error } = await supabase
+        .from("coupons")
+        .delete()
+        .eq("id", id)
+        .select();
+
+      if (error) {
+        console.error("Supabase delete error:", error);
+        toast({
+          title: "Delete Failed",
+          description: error.message || "Database rejected the deletion.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        console.warn("No rows deleted. This usually means an RLS Policy issue or the record was already gone.");
+        toast({
+          title: "Permission Denied",
+          description: "Database allowed the request but didn't delete anything. Check your Supabase RLS policies.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      console.log("Deleted successfully:", data);
+      toast({ title: "🗑️ Deleted", description: `Coupon ${couponId} has been removed` });
+      setScanResult(null); // Clear scan result if we were looking at it
+      fetchCoupons();
+    } catch (err: any) {
+      console.error("Unexpected error during deletion:", err);
+      toast({ title: "Error", description: "An unexpected error occurred", variant: "destructive" });
+    }
+  };
+
   const filtered = coupons.filter((c) => {
     if (search && !c.coupon_id.toLowerCase().includes(search.toLowerCase()) && !c.name.toLowerCase().includes(search.toLowerCase())) return false;
     if (filter === "Unused" && c.status !== "Unused") return false;
@@ -236,6 +286,29 @@ export default function AdminDashboard() {
           </Button>
         </div>
 
+        {/* RLS Warning / Help */}
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
+          <p className="font-bold flex items-center gap-2 mb-1">
+            <ShieldCheck className="w-4 h-4" /> Having trouble deleting?
+          </p>
+          <p>
+            The <strong>"Permission Denied"</strong> error means your database is blocking the delete for security.
+            Paste and <strong>Run</strong> this in your <strong>Supabase SQL Editor</strong> to fix it:
+            <details className="mt-2 cursor-pointer">
+              <summary className="font-semibold underline text-amber-900">Show SQL Fix (Force Grant Access)</summary>
+              <pre className="bg-black/5 p-2 rounded mt-1 overflow-x-auto text-xs font-mono select-all">
+                {`/* 1. Remove old policy if it exists */
+DROP POLICY IF EXISTS "Admins can delete coupons" ON public.coupons;
+
+/* 2. Grant delete access to ALL logged-in admins */
+CREATE POLICY "Admins can delete coupons" ON public.coupons
+FOR DELETE TO authenticated
+USING (true);`}
+              </pre>
+            </details>
+          </p>
+        </div>
+
         {/* QR Scanner */}
         {showScanner && (
           <div className="bg-card border rounded-xl p-4 space-y-3">
@@ -266,10 +339,31 @@ export default function AdminDashboard() {
                 <p><strong>Verification:</strong> {scanResult.coupon.verification_status}</p>
                 {scanResult.coupon.transaction_id && <p><strong>Txn ID:</strong> {scanResult.coupon.transaction_id}</p>}
                 {scanResult.valid && (
-                  <Button onClick={() => handleRedeem(scanResult.coupon!.coupon_id)} className="mt-3 bg-success hover:bg-success/90 text-success-foreground">
+                  <Button onClick={() => handleRedeem(scanResult.coupon!.coupon_id)} className="mt-3 bg-success hover:bg-success/90 text-success-foreground mr-2">
                     Mark as Redeemed
                   </Button>
                 )}
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline" className="mt-3 text-destructive hover:bg-destructive/10">
+                      <Trash2 className="w-4 h-4 mr-2" /> Delete Coupon
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will permanently delete the coupon for <strong>{scanResult.coupon.name}</strong>.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDelete(scanResult.coupon!.id, scanResult.coupon!.coupon_id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             )}
           </div>
@@ -374,6 +468,28 @@ export default function AdminDashboard() {
                           <CheckCircle className="w-3 h-3" /> Redeem
                         </Button>
                       )}
+
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button size="sm" variant="ghost" className="text-xs gap-1 text-destructive hover:text-destructive hover:bg-destructive/10">
+                            <Trash2 className="w-3 h-3" /> Delete
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This will permanently delete the coupon for <strong>{c.name}</strong> ({c.coupon_id}). This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(c.id, c.coupon_id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </td>
                   </tr>
                 ))}
