@@ -108,12 +108,12 @@ export default function AdminDashboard() {
 
       if (error) throw error;
       setManualCoupon(data as Coupon);
-      toast({ title: "Coupon Generated!", description: \`Coupon \${couponId} created\` });
+      toast({ title: "Coupon Generated!", description: `Coupon ${couponId} created` });
       fetchCoupons();
       setManualName("");
       setManualPhone("");
-    } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
+    } catch (err: unknown) {
+      toast({ title: "Error", description: err instanceof Error ? err.message : "An unknown error occurred", variant: "destructive" });
     } finally {
       setManualLoading(false);
     }
@@ -160,7 +160,7 @@ export default function AdminDashboard() {
       toast({ title: "Error", description: "Failed to redeem", variant: "destructive" });
       return;
     }
-    toast({ title: "✅ Redeemed!", description: \`Coupon \${couponId} marked as redeemed\` });
+    toast({ title: "✅ Redeemed!", description: `Coupon ${couponId} marked as redeemed` });
     setScanResult(null);
     fetchCoupons();
   };
@@ -175,7 +175,7 @@ export default function AdminDashboard() {
       toast({ title: "Error", description: "Failed to verify", variant: "destructive" });
       return;
     }
-    toast({ title: "✅ Verified!", description: \`Payment for \${couponId} verified\` });
+    toast({ title: "✅ Verified!", description: `Payment for ${couponId} verified` });
     fetchCoupons();
   };
 
@@ -209,10 +209,10 @@ export default function AdminDashboard() {
       }
 
       console.log("Deleted successfully:", data);
-      toast({ title: "🗑️ Deleted", description: \`Coupon \${couponId} has been removed\` });
+      toast({ title: "🗑️ Deleted", description: `Coupon ${couponId} has been removed` });
       setScanResult(null); // Clear scan result if we were looking at it
       fetchCoupons();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Unexpected error during deletion:", err);
       toast({ title: "Error", description: "An unexpected error occurred", variant: "destructive" });
     }
@@ -251,7 +251,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-background">
       <header className="gradient-waffle text-primary-foreground p-4 sticky top-0 z-50 shadow-lg">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <h1 className="text-xl font-display font-bold"> waffle-fiesta-coupons Admin</h1>
+          <h1 className="text-xl font-display font-bold">🧇 Waffle Fiesta Admin</h1>
           <Button variant="ghost" size="sm" onClick={handleLogout} className="text-primary-foreground hover:bg-primary-foreground/10">
             <LogOut className="w-4 h-4 mr-1" /> Logout
           </Button>
@@ -268,7 +268,7 @@ export default function AdminDashboard() {
             { label: "Online (UPI)", value: stats.online, icon: CreditCard, color: "bg-accent/20 text-accent-foreground" },
             { label: "Cash", value: stats.cash, icon: Banknote, color: "bg-secondary/50 text-secondary-foreground" },
           ].map((s) => (
-            <div key={s.label} className={\`rounded-xl p-4 \${s.color} border\`}>
+            <div key={s.label} className={`rounded - xl p - 4 ${s.color} border`}>
               <s.icon className="w-5 h-5 mb-1" />
               <p className="text-2xl font-bold">{s.value}</p>
               <p className="text-xs opacity-80">{s.label}</p>
@@ -297,13 +297,13 @@ export default function AdminDashboard() {
             <details className="mt-2 cursor-pointer">
               <summary className="font-semibold underline text-amber-900">Show SQL Fix (Force Grant Access)</summary>
               <pre className="bg-black/5 p-2 rounded mt-1 overflow-x-auto text-xs font-mono select-all">
-                {\`/* 1. Remove old policy if it exists */
+                {`/* 1. Remove old policy if it exists */
 DROP POLICY IF EXISTS "Admins can delete coupons" ON public.coupons;
 
 /* 2. Grant delete access to ALL logged-in admins */
 CREATE POLICY "Admins can delete coupons" ON public.coupons
 FOR DELETE TO authenticated
-USING (true);\`}
+USING (true);`}
               </pre>
             </details>
           </p>
@@ -322,7 +322,7 @@ USING (true);\`}
 
         {/* Scan Result */}
         {scanResult && (
-          <div className={\`border-2 rounded-xl p-5 \${scanResult.valid ? "border-success bg-success/5" : "border-destructive bg-destructive/5"}\`}>
+          <div className={`border - 2 rounded - xl p - 5 ${scanResult.valid ? "border-success bg-success/5" : "border-destructive bg-destructive/5"}`}>
             <div className="flex items-center gap-3 mb-3">
               {scanResult.valid ? <CheckCircle className="w-8 h-8 text-success" /> : <X className="w-8 h-8 text-destructive" />}
               <div>
@@ -442,17 +442,17 @@ USING (true);\`}
                     <td className="p-3">{c.name}</td>
                     <td className="p-3 hidden md:table-cell">{c.phone}</td>
                     <td className="p-3">
-                      <span className={\`px-2 py-0.5 rounded-full text-xs font-medium \${c.payment_type === "Online" ? "bg-accent/20 text-accent-foreground" : "bg-secondary text-secondary-foreground"}\`}>
+                      <span className={`px - 2 py - 0.5 rounded - full text - xs font - medium ${c.payment_type === "Online" ? "bg-accent/20 text-accent-foreground" : "bg-secondary text-secondary-foreground"}`}>
                         {c.payment_type === "Online" ? "UPI" : "Cash"}
                       </span>
                     </td>
                     <td className="p-3">
-                      <span className={\`px-2 py-0.5 rounded-full text-xs font-medium \${c.verification_status === "Verified" ? "bg-success/10 text-success" : "bg-warning/10 text-warning-foreground"}\`}>
+                      <span className={`px - 2 py - 0.5 rounded - full text - xs font - medium ${c.verification_status === "Verified" ? "bg-success/10 text-success" : "bg-warning/10 text-warning-foreground"}`}>
                         {c.verification_status}
                       </span>
                     </td>
                     <td className="p-3">
-                      <span className={\`px-2 py-0.5 rounded-full text-xs font-medium \${c.status === "Unused" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}\`}>
+                      <span className={`px - 2 py - 0.5 rounded - full text - xs font - medium ${c.status === "Unused" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
                         {c.status}
                       </span>
                     </td>

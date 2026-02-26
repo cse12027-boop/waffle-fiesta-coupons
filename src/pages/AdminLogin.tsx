@@ -33,8 +33,8 @@ export default function AdminLogin() {
       }
 
       navigate("/admin/dashboard");
-    } catch (err: any) {
-      toast({ title: "Login Failed", description: err.message, variant: "destructive" });
+    } catch (err: unknown) {
+      toast({ title: "Login Failed", description: err instanceof Error ? err.message : "An unknown error occurred", variant: "destructive" });
     } finally {
       setLoading(false);
     }

@@ -13,7 +13,8 @@ import { z } from "zod";
 import { QRCodeSVG } from "qrcode.react";
 
 const PRICE = 100;
-const UPI_ID = "pujithakothuri713@okicici";
+const UPI_ID = "7204360341@okbizaxis";
+const ACCOUNT_NAME = "Waffle Fiesta";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -84,6 +85,7 @@ export default function Index() {
         phone: parsed.data.phone,
         coupon_id: couponId,
         payment_type: "Online",
+        payment_id: parsed.data.transactionId, // Map to payment_id to satisfy CHECK constraint
         transaction_id: parsed.data.transactionId,
         verification_status: "Pending",
         status: "Unused",
@@ -104,8 +106,9 @@ export default function Index() {
         createdAt: data.created_at,
       });
       toast({ title: "🧇 Coupon Generated!", description: "Your coupon is pending payment verification by admin." });
-    } catch (err: any) {
-      toast({ title: "Error", description: err.message || "Something went wrong", variant: "destructive" });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Something went wrong";
+      toast({ title: "Error", description: message, variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -182,12 +185,12 @@ export default function Index() {
 
               <div className="flex flex-col items-center space-y-4">
                 <a
-                  href={`upi://pay?pa=${UPI_ID}&pn=Pujitha Kothuri&am=${PRICE}&cu=INR`}
+                  href={`upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(ACCOUNT_NAME)}&am=${PRICE}&cu=INR&mc=5814&tn=Payment%20to%20Waffle%20Fiesta`}
                   className="bg-white rounded-xl p-6 shadow-md border-2 border-primary/20 hover:border-primary/40 transition-colors cursor-pointer"
-                  title="Click to pay via UPI app"
+                  title="Scan or click to pay via UPI app"
                 >
                   <QRCodeSVG
-                    value={`upi://pay?pa=${UPI_ID}&pn=Pujitha Kothuri&am=${PRICE}&cu=INR`}
+                    value={`upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(ACCOUNT_NAME)}&am=${PRICE}&cu=INR&mc=5814&tn=Payment%20to%20Waffle%20Fiesta`}
                     size={224}
                     level="H"
                     includeMargin={true}
@@ -199,7 +202,7 @@ export default function Index() {
                   <Button
                     variant="outline"
                     className="w-full h-11 border-primary/20 hover:bg-primary/5 text-primary font-bold md:hidden"
-                    onClick={() => window.location.href = `upi://pay?pa=${UPI_ID}&pn=Pujitha Kothuri&am=${PRICE}&cu=INR`}
+                    onClick={() => window.location.href = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(ACCOUNT_NAME)}&am=${PRICE}&cu=INR&mc=5814&tn=Payment%20to%20Waffle%20Fiesta`}
                   >
                     📲 Pay via UPI App
                   </Button>
@@ -253,6 +256,6 @@ export default function Index() {
           <Shield className="w-4 h-4" /> Admin Dashboard
         </Link>
       </div>
-    </div>
+    </div >
   );
 }
