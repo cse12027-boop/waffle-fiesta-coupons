@@ -39,7 +39,7 @@ export function CouponCard({ couponId, name, phone, paymentType, createdAt }: Co
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
-    doc.text("COLLEGE FEST 2026 • STALL #17", 74, 30, { align: "center" });
+    doc.text("SITAR 2K26 2026 • STALL #17", 74, 30, { align: "center" });
 
     // Decorative Dividers
     doc.setDrawColor(89, 60, 31);
@@ -137,7 +137,7 @@ export function CouponCard({ couponId, name, phone, paymentType, createdAt }: Co
       {/* Header */}
       <div className="gradient-waffle p-5 text-center">
         <h2 className="text-2xl font-display font-bold text-primary-foreground">🧇 Waffle Fiesta</h2>
-        <p className="text-sm text-primary-foreground/80 mt-1">Stall #17 • College Fest 2026</p>
+        <p className="text-sm text-primary-foreground/80 mt-1">Stall #17 • SITAR 2K26 2026</p>
       </div>
 
       {/* Dashed separator */}

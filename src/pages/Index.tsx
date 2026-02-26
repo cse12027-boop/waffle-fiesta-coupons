@@ -13,7 +13,7 @@ import { z } from "zod";
 import { QRCodeSVG } from "qrcode.react";
 
 const PRICE = 100;
-const UPI_ID = "7204360341@okbizaxis";
+const UPI_ID = "pujithakothuri713@okicici";
 const ACCOUNT_NAME = "Waffle Fiesta";
 
 const formSchema = z.object({
@@ -153,7 +153,7 @@ export default function Index() {
             <WaffleEmoji className="text-5xl" />
           </div>
           <p className="text-lg text-muted-foreground font-medium mt-2">
-            College Fest 2026 • Stall #17
+            SITAR 2K26 • Stall #17
           </p>
           <div className="mt-4 inline-block gradient-gold text-accent-foreground px-6 py-2 rounded-full font-bold text-xl shadow-md animate-pulse-glow">
             ₹{PRICE} per Waffle
