@@ -186,7 +186,7 @@ export default function Index() {
               <div className="flex flex-col items-center space-y-4">
                 <div className="bg-white rounded-xl p-2 shadow-md border-2 border-primary/20 hover:border-primary/40 transition-colors cursor-pointer overflow-hidden">
                   <img
-                    src="/src/phonepe-qr.jpg"
+                    src="/phonepe-qr.jpg"
                     alt="PhonePe QR Code"
                     className="w-full h-auto max-w-[224px] mx-auto"
                   />
