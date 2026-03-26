@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: (https://waffle-fiesta.netlify.app/)
+**URL**: https://waffle-fiesta.netlify.app/
 
 ## How can I edit this code?
 
@@ -10,7 +10,7 @@ There are several ways of editing your application.
 
 **Use Lovable**
 
-Simply visit the (https://waffle-fiesta.netlify.app/) and start prompting.
+Simply visit the https://waffle-fiesta.netlify.app/ and start prompting.
 
 Changes made via Lovable will be committed automatically to this repo.
 
